@@ -100,7 +100,7 @@ class GhostCleaner():
       # print("End   locatn: {}".format(wpEnd))
       # print("New location: {}".format(newLocation))
       self.updateLocation(newLocation)
-      # time.sleep(3)
+      time.sleep(3)
       if newLocation == wpEnd or self.killswitch:
         return
 
@@ -127,4 +127,4 @@ class GhostCleaner():
 
       # When a streets is cleaned, simulate a pause while the ghost cleaner drives to the new street
       self.updateActiveStatus(0)
-      # time.sleep(10)
+      time.sleep(10)
