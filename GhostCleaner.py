@@ -35,7 +35,7 @@ class GhostCleaner():
       'session_id': self.sessionId,
       'sub_session_id': self.subSessionId
     }
-    print("{} - Sending location {} to database.".format(datetime.now(), self.location))
+    print("{} - Sending location {} to api ({})".format(datetime.now(), self.location, url))
     r = requests.post(url = url, data = data)
 
   
@@ -55,16 +55,16 @@ class GhostCleaner():
     yVector = np.array([0,1])
     # Project speedVector onto x and y
     speedVProjX =  np.dot(speedVector, xVector) / np.dot(xVector, xVector)
-    # print(speedVProjX)
+    print(speedVProjX)
     speedVProjY =  np.dot(speedVector, yVector) / np.dot(yVector, yVector)
-    # print(speedVProjY)
-    # print("---")
+    print(speedVProjY)
+    print("---")
 
     newLat = round(self.location[0] + speedVProjY, 7)
     newLon = round(self.location[1] + speedVProjX, 7)
 
-    # print("New lon: {}".format(newLon))
-    # print("New lat: {}".format(newLat))
+    print("New lon: {}".format(newLon))
+    print("New lat: {}".format(newLat))
 
     # Check if we overstepped
     if dWpLon > 0:
@@ -100,7 +100,7 @@ class GhostCleaner():
       # print("End   locatn: {}".format(wpEnd))
       # print("New location: {}".format(newLocation))
       self.updateLocation(newLocation)
-      time.sleep(3)
+      # time.sleep(3)
       if newLocation == wpEnd or self.killswitch:
         return
 
@@ -109,11 +109,11 @@ class GhostCleaner():
     self.streets = streets
     self.sessionId += 1
     self.subSessionId = 0
-    self.location = streets[0][0]
 
     # print(self.streets)
     # Loop the list of streets (a street is defined by a list of waypoints (coordinates))
     for waypoints in self.streets:
+      self.location = waypoints[0] 
       # print(waypoints)
       self.updateActiveStatus(1)
       self.subSessionId += 1
@@ -127,4 +127,4 @@ class GhostCleaner():
 
       # When a streets is cleaned, simulate a pause while the ghost cleaner drives to the new street
       self.updateActiveStatus(0)
-      time.sleep(10)
+      # time.sleep(10)
