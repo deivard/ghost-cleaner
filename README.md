@@ -13,11 +13,11 @@ python simulator.py [OPTION]...
 ```
 
 ### Options
---cleaners
-  Number of simultaneous cleaners to simulate. Default is: 1.
+--cleaners <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;Number of simultaneous cleaners to simulate. Default is: 1.
 
---baseurl
-  Specify the base url for the api. Default is: http://127.0.0.1:8000/
+--baseurl <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;Specify the base url for the api. Default is: http://127.0.0.1:8000/
 
 ### Example
 Run the simulator with 10 simultaneous cleaners and send their locations to https://snowcleanassist.herokuapp.com/api/location
