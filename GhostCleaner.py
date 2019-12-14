@@ -55,16 +55,16 @@ class GhostCleaner():
     yVector = np.array([0,1])
     # Project speedVector onto x and y
     speedVProjX =  np.dot(speedVector, xVector) / np.dot(xVector, xVector)
-    print(speedVProjX)
+    # print(speedVProjX)
     speedVProjY =  np.dot(speedVector, yVector) / np.dot(yVector, yVector)
-    print(speedVProjY)
-    print("---")
+    # print(speedVProjY)
+    # print("---")
 
     newLat = round(self.location[0] + speedVProjY, 7)
     newLon = round(self.location[1] + speedVProjX, 7)
 
-    print("New lon: {}".format(newLon))
-    print("New lat: {}".format(newLat))
+    # print("New lon: {}".format(newLon))
+    # print("New lat: {}".format(newLat))
 
     # Check if we overstepped
     if dWpLon > 0:
