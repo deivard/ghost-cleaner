@@ -5,6 +5,11 @@ Keyboard module (https://pypi.org/project/keyboard/)
 ```
 pip install keyboard
 ```
+NumPy
+```
+pip install numpy
+```
+
 
 ## Running the simulator
 Run the simulator with 1 cleaner, and post the locations to the default base url + api route (http://127.0.0.1:8000/)
