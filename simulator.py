@@ -70,7 +70,7 @@ def main():
     t.start()
 
   # Add the killswith button
-  keyboard.add_hotkey("esc", kill, args=(cleaners,))
+  keyboard.add_hotkey("shift+esc", kill, args=(cleaners,))
 
   for t in threads:
     t.join()
