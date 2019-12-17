@@ -11,12 +11,14 @@ class GhostCleaner():
     self.streets = None
     self.sessionId = 0
     self.subSessionId = 0
+    self.subSessionDistance = 0
     self.baseUrl = baseUrl
     self.location =  [0, 0] # lat, lon for Google. lon lat for geojson
     self.speed = speed / 1000000
     self.killswitch = 0
 
   def activateKillswitch(self):
+    self.updateActiveStatus(0)
     self.killswitch = 1
 
 
@@ -27,11 +29,14 @@ class GhostCleaner():
     # print(r)
 
   def sendLocationToDB(self):
+    timestamp = int(time.time())
     url = "{}/api/location".format(self.baseUrl)
     data = { 
       'driver_id': self.driverId,
       'lat': self.location[1],
       'lng': self.location[0],
+      'sent_at' : timestamp,
+      'meters_in_sub_session' : float(self.subSessionDistance),
       'session_id': self.sessionId,
       'sub_session_id': self.subSessionId
     }
@@ -83,11 +88,34 @@ class GhostCleaner():
       if newLat < wpEnd[0]:
         newLat = wpEnd[0]
         # print("Overstepped lat")
+
+
     
     return [newLat, newLon]
 
+  # Stolen from https://stackoverflow.com/a/4913653
+  def haversine(self, lon1, lat1, lon2, lat2):
+    """
+    Calculate the great circle distance between two points 
+    on the earth (specified in decimal degrees)
+    """
+    # convert decimal degrees to radians 
+    lon1, lat1, lon2, lat2 = map(math.radians, [lon1, lat1, lon2, lat2])
+
+    # haversine formula 
+    dlon = lon2 - lon1 
+    dlat = lat2 - lat1 
+    a = math.sin(dlat/2)**2 + math.cos(lat1) * math.cos(lat2) * math.sin(dlon/2)**2
+    c = 2 * math.asin(math.sqrt(a)) 
+    r = 6372.8 # Radius of earth in kilometers. Use 3956 for miles
+    return c * r * 1000
+
+
+
   # Sets the ghost's position to the new position and sends an update to the database
   def updateLocation(self, location):
+    distance = self.haversine(self.location[1], self.location[0], location[1], location[0])
+    self.subSessionDistance += distance
     self.location = location
     self.sendLocationToDB()
 
@@ -113,10 +141,11 @@ class GhostCleaner():
     # print(self.streets)
     # Loop the list of streets (a street is defined by a list of waypoints (coordinates))
     for waypoints in self.streets:
-      self.location = waypoints[0] 
+      self.location = waypoints[0]
       # print(waypoints)
       self.updateActiveStatus(1)
       self.subSessionId += 1
+      self.subSessionDistance = 0
       # Loop each waypoint that makes up the street
       for wp in range(len(waypoints)-1):
         if self.killswitch:
