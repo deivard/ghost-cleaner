@@ -11,8 +11,9 @@ def kill(cleaners):
     c.activateKillswitch()
 
 def main():
+  demo = False
   # Command line arguments that is supported
-  shortOptions = ""
+  shortOptions = "-d"
   longOptions = ["cleaners=", "baseurl="]
   fullCmdArgs = sys.argv
   # The actual arguments passed 
@@ -31,6 +32,8 @@ def main():
         baseUrl = currVal
         if baseUrl[-1] == "/":
           baseUrl = baseUrl[:-1]
+      if currArg in ("-d"):
+        demo = True
 
   # EAFP style, "easier to ask forgiveness than permission" (https://stackoverflow.com/questions/9390126/pythonic-way-to-check-if-something-exists)
   try:
@@ -42,7 +45,11 @@ def main():
   except NameError:
     baseUrl = "http://127.0.0.1:8000"
   
-  f = open("export.geojson", "r")
+  if demo:
+    f = open("demo_path.geojson", "r")
+  else:
+    f = open("export.geojson", "r")
+
   data = json.load(f)
   # Street is defined by a line
   lines = []
