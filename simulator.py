@@ -46,6 +46,7 @@ def main():
     baseUrl = "http://127.0.0.1:8000"
   
   if demo:
+    numOfCleaners = 14
     f = open("demo_path.geojson", "r")
   else:
     f = open("export.geojson", "r")

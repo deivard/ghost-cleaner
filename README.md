@@ -24,6 +24,8 @@ python simulator.py [OPTION]...
 --baseurl <br/>
 &nbsp;&nbsp;&nbsp;&nbsp;Specify the base url for the api. Default is: http://127.0.0.1:8000/
 
+-d <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;Runs the demo mode (for presentations)
 ### Example
 Run the simulator with 10 simultaneous cleaners and send their locations to https://snowcleanassist.herokuapp.com/api/location
 ```
