@@ -2,10 +2,11 @@ import time
 import requests
 import math
 import numpy as np
+import random
 from datetime import datetime
 
 class GhostCleaner():
-  def __init__(self, name, driverId, speed = 200, baseUrl = "http://127.0.0.1:8000"):
+  def __init__(self, name, driverId, speed = 200, baseUrl = "http://127.0.0.1:8000", jobType = 0):
     self.name = name
     self.driverId = driverId
     self.streets = None
@@ -16,6 +17,11 @@ class GhostCleaner():
     self.location =  [0, 0] # lat, lon for Google. lon lat for geojson
     self.speed = speed / 1000000
     self.killswitch = 0
+    self.jobType = jobType
+    # Check if the jobType should be randomized
+    if (jobType == 0):
+      self.jobType = random.randint(1,3)
+
 
   def activateKillswitch(self):
     self.updateActiveStatus(0)
@@ -36,6 +42,7 @@ class GhostCleaner():
       'lat': self.location[1],
       'lng': self.location[0],
       'sent_at' : timestamp,
+      'job_id' : self.jobType,
       'meters_in_sub_session' : float(self.subSessionDistance),
       'session_id': self.sessionId,
       'sub_session_id': self.subSessionId
@@ -128,7 +135,7 @@ class GhostCleaner():
       # print("End   locatn: {}".format(wpEnd))
       # print("New location: {}".format(newLocation))
       self.updateLocation(newLocation)
-      time.sleep(3)
+      time.sleep(0.5)
       if newLocation == wpEnd or self.killswitch:
         return
 
@@ -156,4 +163,4 @@ class GhostCleaner():
 
       # When a streets is cleaned, simulate a pause while the ghost cleaner drives to the new street
       self.updateActiveStatus(0)
-      time.sleep(10)
+      time.sleep(2)
