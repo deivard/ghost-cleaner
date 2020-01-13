@@ -6,7 +6,7 @@ import random
 from datetime import datetime
 
 class GhostCleaner():
-  def __init__(self, name, driverId, speed = 200, baseUrl = "http://127.0.0.1:8000", jobType = 0):
+  def __init__(self, name, driverId, speed = 400, baseUrl = "http://127.0.0.1:8000", jobType = 0):
     self.name = name
     self.driverId = driverId
     self.streets = None
@@ -135,7 +135,7 @@ class GhostCleaner():
       # print("End   locatn: {}".format(wpEnd))
       # print("New location: {}".format(newLocation))
       self.updateLocation(newLocation)
-      time.sleep(0.5)
+      time.sleep(1.5)
       if newLocation == wpEnd or self.killswitch:
         return
 
